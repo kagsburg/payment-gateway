@@ -38,11 +38,11 @@ jobs:
       - name: Build and push client image using docker-compose
         working-directory: ./payment-gateway-client
         run: |
-          docker build -t kagsburg/payment-gateway-client ./payment-gateway-client
+          docker build -t kagsburg/payment-gateway-client
           docker push kagsburg/payment-gateway-client
 
       - name: Build and push API image using docker-compose
         working-directory: ./payment-gateway
         run: |
-          docker build -t kagsburg/payment-gateway-api ./payment-gateway
+          docker build -t kagsburg/payment-gateway-api
           docker push kagsburg/payment-gateway-api
