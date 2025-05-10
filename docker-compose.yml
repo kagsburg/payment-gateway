@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  ####################################################################################################
+  # Laravel Client Service
+  # This service runs the Laravel client application
+  ####################################################################################################
+  laravel-client:
+    image: kagsburg/payment-gateway-client
+    container_name: client-app
+    restart: unless-stopped
+    ports:
+      - "8001:80"
+    volumes:
+      - ./:/var/www/html
+    environment:
+      - PAYMENT_GATEWAY_URL=http://payment-api:8000/api/v1/
+    depends_on:
+      - payment-api
+    networks:
+      - payment-network
+
+  ####################################################################################################
+  # FASTAPI Service
+  # This service runs the FastAPI API application
+  ####################################################################################################
+  payment-api:
+    image:  kagsburg/payment-gateway-api
+    container_name: payment-gateway-web
+    restart: unless-stopped
+    ports:
+      - "8083:8000"
+    networks:
+      - payment-network
+    environment:
+      - DATABASE_URL=mysql+pymysql://root:rootpassword@db/payment_gateway
+    depends_on:
+      - db
+  ####################################################################################################
+  # Database
+  ####################################################################################################
+  db:
+    image: mysql:8.0
+    container_name: db
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=payment_gateway
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - payment-network
+    command: --default-authentication-plugin=mysql_native_password
+
+
+networks:
+  payment-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
