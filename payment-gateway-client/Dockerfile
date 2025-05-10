@@ -32,10 +32,6 @@ COPY .env.example .env
 # Install application dependencies
 RUN composer install
 
-# Generate app key (only if .env exists and doesn't already have a key)
-RUN if [ -f .env ] && ! grep -q 'APP_KEY=' .env; then \
-    php artisan key:generate; \
-fi
 # Run migrations (only if the database is set up)
 RUN if [ -f .env ] && grep -q 'DB_CONNECTION=' .env; then \
     php artisan migrate --force; \
