@@ -1,0 +1,27 @@
+# Node and vendor dependencies (they will be installed in image)
+node_modules
+vendor
+
+# Git and Docker
+.git
+.gitignore
+.dockerignore
+
+# IDEs and OS files
+*.log
+*.swp
+*.swo
+*.bak
+*.tmp
+*.DS_Store
+.vscode
+.idea
+
+# Compiled files and caches
+
+.phpunit.result.cache
+.env.testing
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
