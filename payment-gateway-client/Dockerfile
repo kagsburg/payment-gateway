@@ -33,13 +33,13 @@ COPY .env.example .env
 RUN composer install
 
 # Generate app key (only if .env exists and doesn't already have a key)
-RUN if [ -f .env ]; then \
-      if ! grep -q '^APP_KEY=' .env; then \
-        php artisan key:generate; \
-      fi; \
-    else \
-      echo "Warning: .env file not found. APP_KEY will not be generated."; \
-    fi
+RUN if [ -f .env ] && ! grep -q 'APP_KEY=' .env; then \
+    php artisan key:generate; \
+fi
+# Run migrations (only if the database is set up)
+RUN if [ -f .env ] && grep -q 'DB_CONNECTION=' .env; then \
+    php artisan migrate --force; \
+fi
 # Build assets (only if there are frontend assets to build)
 RUN if [ -f webpack.mix.js ] || [ -f vite.config.js ] || [ -f tailwind.config.js ]; then \
     npm install && npm run build; \
