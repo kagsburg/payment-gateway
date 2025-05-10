@@ -21,9 +21,6 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# Install Node.js dependencies and build assets
-RUN npm install -D tailwindcss postcss autoprefixer && \
-    npm run build
 # Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
