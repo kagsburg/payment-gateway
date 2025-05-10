@@ -11,8 +11,6 @@ services:
     restart: unless-stopped
     ports:
       - "8001:80"
-    # volumes:
-    #   - ./payment-gateway-client:/var/www/html
     environment:
       - PAYMENT_GATEWAY_URL=http://payment-api:8000/api/v1/
     depends_on:
