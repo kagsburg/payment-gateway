@@ -27,7 +27,7 @@ jobs:
       - name: Run API unit tests
         working-directory: ./payment-gateway
         run: |
-          pytest  # or your test command
+          pytest -s -v # or your test command
 
       - name: Log in to DockerHub
         uses: docker/login-action@v3
@@ -38,5 +38,11 @@ jobs:
       - name: Build and push client image using docker-compose
         working-directory: ./payment-gateway-client
         run: |
-          docker-compose -f docker-compose.yml build
-          docker push kagsburg/payment-gateway
+          docker compose -f docker-compose.yml build
+          docker push kagsburg/payment-gateway-client
+
+      - name: Build and push API image using docker-compose
+        working-directory: ./payment-gateway
+        run: |
+          docker compose -f docker-compose.yml build
+          docker push kagsburg/payment-gateway-api
