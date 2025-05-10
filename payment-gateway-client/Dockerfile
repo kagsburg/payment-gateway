@@ -11,7 +11,9 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip \
-    libzip-dev
+    libzip-dev \
+    nodejs \
+    npm
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -19,11 +21,14 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 # Install PHP extensions
 RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
+# Install Node.js dependencies and build assets
+RUN npm install -D tailwindcss postcss autoprefixer && \
+    npm run build
 # Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copy .env file (make sure it's in the build context!)
-COPY .env .env
+COPY .env.example .env
 
 # Copy existing application directory contents
 COPY . .
@@ -31,9 +36,14 @@ COPY . .
 # Install application dependencies
 RUN composer install
 
-# Generate app key
-RUN php artisan key:generate
-
+# Generate app key (only if .env exists and doesn't already have a key)
+RUN if [ -f .env ]; then \
+      if ! grep -q '^APP_KEY=' .env; then \
+        php artisan key:generate; \
+      fi; \
+    else \
+      echo "Warning: .env file not found. APP_KEY will not be generated."; \
+    fi
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage
 RUN chmod -R 775 /var/www/html/storage
