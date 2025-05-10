@@ -32,10 +32,14 @@ A complete payment processing system with:
 
 ```bash
 git clone https://github.com/kagsburg/payment-gateway
-cd payment-gateway-client
-docker-compose up --build -d
 ````
-This single command docker-compose up --build -d  will:
+```bash
+cd payment-gateway
+````
+```bash
+docker-compose up -d
+````
+This single command docker-compose up -d  will:
 
 - **Build and start all containers** (Laravel client + FastAPI + MySQL)
 - **Automatically pull/publish all dependencies**
