@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, String, Numeric, Enum, DateTime, ForeignKey
+from sqlalchemy import create_engine, Column, String, Numeric, Enum, DateTime,Integer, ForeignKey
 from sqlalchemy.dialects.mysql import BIGINT
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import relationship,sessionmaker
@@ -31,7 +31,7 @@ class TransactionStatus(enum.Enum):
 class Transaction(Base):
     __tablename__ = "transactions"
 
-    id = Column(BIGINT(unsigned=True), primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     ref_code = Column(String(36),unique=True, index=True)  # String length for UUID
     payer_account = Column(String(10), nullable=False)
     payee_account = Column(String(10), nullable=False)
