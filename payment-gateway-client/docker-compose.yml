@@ -1,6 +1,10 @@
 version: '3.8'
 
 services:
+  ####################################################################################################
+  # Laravel Client Service
+  # This service runs the Laravel client application
+  ####################################################################################################
   laravel-client:
     build:
       context: .
@@ -18,7 +22,10 @@ services:
     networks:
       - payment-network
 
-  # Existing FastAPI Container
+  ####################################################################################################
+  # FASTAPI Service
+  # This service runs the FastAPI API application
+  ####################################################################################################
   payment-api:
     image:  payment-gateway-web
     container_name: payment-gateway-web
@@ -31,6 +38,9 @@ services:
       - DATABASE_URL=mysql+pymysql://root:rootpassword@db/payment_gateway
     depends_on:
       - db
+  ####################################################################################################
+  # Database
+  ####################################################################################################
   db:
     image: mysql:8.0
     container_name: db
