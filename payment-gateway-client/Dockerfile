@@ -22,11 +22,17 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 # Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Copy .env file (make sure it's in the build context!)
+COPY .env .env
+
 # Copy existing application directory contents
 COPY . .
 
 # Install application dependencies
 RUN composer install
+
+# Generate app key
+RUN php artisan key:generate
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage
