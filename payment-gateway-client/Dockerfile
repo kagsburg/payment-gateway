@@ -42,11 +42,8 @@ RUN if [ -f .env ]; then \
     fi
 # Build assets (only if there are frontend assets to build)
 RUN if [ -f webpack.mix.js ] || [ -f vite.config.js ] || [ -f tailwind.config.js ]; then \
-        npm run dev && \
-        npm run build; \
-    else \
-        echo "No frontend build configuration found"; \
-    fi
+    npm install && npm run build; \
+fi
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage
 RUN chmod -R 775 /var/www/html/storage
