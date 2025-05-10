@@ -27,12 +27,11 @@ RUN npm install -D tailwindcss postcss autoprefixer && \
 # Install composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy .env file (make sure it's in the build context!)
-COPY .env.example .env
-
 # Copy existing application directory contents
 COPY . .
 
+# Copy .env file (make sure it's in the build context!)
+COPY .env.example .env
 # Install application dependencies
 RUN composer install
 
@@ -43,6 +42,13 @@ RUN if [ -f .env ]; then \
       fi; \
     else \
       echo "Warning: .env file not found. APP_KEY will not be generated."; \
+    fi
+# Build assets (only if there are frontend assets to build)
+RUN if [ -f webpack.mix.js ] || [ -f vite.config.js ] || [ -f tailwind.config.js ]; then \
+        npm run dev && \
+        npm run build; \
+    else \
+        echo "No frontend build configuration found"; \
     fi
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage
