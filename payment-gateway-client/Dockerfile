@@ -42,7 +42,9 @@ RUN if [ -f webpack.mix.js ] || [ -f vite.config.js ] || [ -f tailwind.config.js
 fi
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage
+RUN chown -R www-data:www-data /var/www/html/database
 RUN chmod -R 775 /var/www/html/storage
+RUN chmod -R 775 /var/www/html/database
 
 # Enable Apache modules
 RUN a2enmod rewrite

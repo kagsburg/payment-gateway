@@ -11,8 +11,7 @@
     @endif
 <div x-data="{ loading: false }">
     <form method="POST" action="{{ route('payment.process') }}" @submit="loading = true" class="space-y-6">
-        @csrf
-           
+        @csrf           
             <div>
                 <label for="payer" class="block text-sm font-medium text-gray-700">Payer Account</label>
                 <input id="payer" type="text" name="payer" value="{{ old('payer') }}" 
