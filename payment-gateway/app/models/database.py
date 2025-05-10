@@ -10,7 +10,7 @@ load_dotenv()
 
 
 # MySQL connection string
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL","sqlite:///./test.db")
 
 # For MySQL, we need to add pool_recycle and other parameters
 engine = create_engine(
