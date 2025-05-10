@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, Column, String, Numeric, Enum, DateTime, ForeignKey
 from sqlalchemy.dialects.mysql import BIGINT
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import declarative_base
 from sqlalchemy.orm import relationship,sessionmaker
 import enum
 import os
@@ -32,7 +32,7 @@ class Transaction(Base):
     __tablename__ = "transactions"
 
     id = Column(BIGINT(unsigned=True), primary_key=True, autoincrement=True)
-    ref_code = Column(String(36), primary_key=True, index=True)  # String length for UUID
+    ref_code = Column(String(36),unique=True, index=True)  # String length for UUID
     payer_account = Column(String(10), nullable=False)
     payee_account = Column(String(10), nullable=False)
     amount = Column(Numeric(19, 4), nullable=False)

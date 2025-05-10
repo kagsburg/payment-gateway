@@ -33,8 +33,9 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 async def general_exception_handler(request: Request, exc: Exception):
     logging.error(f"Unhandled error: {exc}")
     return error_response("An unexpected error occurred", status_code=500)
-# Create database tables
-Base.metadata.create_all(bind=engine)
+if __name__ == "__main__":
+    # Create database tables
+    Base.metadata.create_all(bind=engine)
 
 app.include_router(payments_router, prefix="/api/v1")
 
